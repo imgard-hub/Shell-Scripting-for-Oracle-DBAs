@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Operators — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 8</div>
+<h1>Operators</h1>
+<div class="sub">Chapter 8 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch07.html">← Chapter 7</a><a href="index.html">📋 Contents</a><a href="ch09.html">Chapter 9 →</a></div><h2 class="ch-title">Operators</h2>
+<div class="card"><div class="card-text"><p>Operators compare values, do math, and test conditions. Bash uses different syntax than most languages — pay close attention.</p>
+<table class="tbl">
+<tr><th>Type</th><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+<tr><td rowspan="6"><strong>Numeric</strong></td><td>-eq</td><td>equal</td><td>[ $A -eq $B ]</td></tr>
+<tr><td>-ne</td><td>not equal</td><td>[ $A -ne $B ]</td></tr>
+<tr><td>-gt</td><td>greater than</td><td>[ $A -gt 85 ]</td></tr>
+<tr><td>-ge</td><td>greater/equal</td><td>[ $A -ge 85 ]</td></tr>
+<tr><td>-lt</td><td>less than</td><td>[ $A -lt 85 ]</td></tr>
+<tr><td>-le</td><td>less/equal</td><td>[ $A -le 85 ]</td></tr>
+<tr><td rowspan="3"><strong>String</strong></td><td>=</td><td>strings equal</td><td>[ "$A" = "OPEN" ]</td></tr>
+<tr><td>!=</td><td>not equal</td><td>[ "$A" != "OPEN" ]</td></tr>
+<tr><td>-z</td><td>string empty</td><td>[ -z "$A" ]</td></tr>
+<tr><td rowspan="4"><strong>File</strong></td><td>-f</td><td>file exists</td><td>[ -f /path/file ]</td></tr>
+<tr><td>-d</td><td>dir exists</td><td>[ -d /path/dir ]</td></tr>
+<tr><td>-s</td><td>exists & not empty</td><td>[ -s /path/file ]</td></tr>
+<tr><td>-x</td><td>is executable</td><td>[ -x /path/script ]</td></tr>
+<tr><td rowspan="3"><strong>Logical</strong></td><td>&&</td><td>AND</td><td>[ $A -gt 0 ] && [ $B -gt 0 ]</td></tr>
+<tr><td>||</td><td>OR</td><td>[ $A -gt 0 ] || [ $B -gt 0 ]</td></tr>
+<tr><td>!</td><td>NOT</td><td>[ ! -f /path ]</td></tr>
+<tr><td><strong>Math</strong></td><td>$(( ))</td><td>arithmetic</td><td>RESULT=$((A + B))</td></tr>
+</table></div></div>
+<div class="code"><div class="code-label">DBA examples using operators</div><pre><span class="cm"># Check if tablespace is over threshold</span>
+<span class="vr">USAGE</span>=90
+<span class="kw">if</span> [ <span class="vr">$USAGE</span> -gt 85 ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"WARNING: Usage above 85%"</span>
+<span class="kw">fi</span>
+
+<span class="cm"># Check if alert log exists before reading</span>
+<span class="kw">if</span> [ -f <span class="str">"<span class="vr">$ALERT_LOG</span>"</span> ]; <span class="kw">then</span>
+    <span class="kw">grep</span> -i <span class="str">"ORA-"</span> <span class="str">"<span class="vr">$ALERT_LOG</span>"</span>
+<span class="kw">else</span>
+    <span class="kw">echo</span> <span class="str">"Alert log not found!"</span>
+<span class="kw">fi</span>
+
+<span class="cm"># Combine conditions: high usage AND production</span>
+<span class="kw">if</span> [ <span class="vr">$USAGE</span> -gt 85 ] && [ <span class="str">"<span class="vr">$ENV</span>"</span> = <span class="str">"PROD"</span> ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"CRITICAL: Production at <span class="vr">${USAGE}</span>%!"</span>
+<span class="kw">fi</span>
+
+<span class="cm"># Calculate percentage</span>
+<span class="vr">PCT</span>=$(( (USED * 100) / TOTAL ))
+<span class="kw">echo</span> <span class="str">"Usage: <span class="vr">${PCT}</span>%"</span></pre></div>
+<div class="callout amber"><strong>Critical syntax:</strong> Spaces inside [ ] are REQUIRED. <code>[$A -gt 85]</code> fails. <code>[ $A -gt 85 ]</code> works.</div>
+<div class="nav"><a href="ch07.html">← Chapter 7</a><a href="index.html">📋 Contents</a><a href="ch09.html">Chapter 9 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

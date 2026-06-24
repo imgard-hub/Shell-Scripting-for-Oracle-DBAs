@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Variables — Storing Data — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 6</div>
+<h1>Variables — Storing Data</h1>
+<div class="sub">Chapter 6 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch05.html">← Chapter 5</a><a href="index.html">📋 Contents</a><a href="ch07.html">Chapter 7 →</a></div><h2 class="ch-title">Variables — Storing Data</h2>
+<div class="card"><div class="card-text"><p>A variable is a name that holds a value. Instead of typing a long path ten times, store it once and reference it.</p></div></div>
+<div class="code"><div class="code-label">Defining variables</div><pre><span class="cm"># IMPORTANT: NO spaces around the = sign!</span>
+<span class="vr">NAME</span>=<span class="str">"Imgard"</span>              <span class="cm"># ✅ Correct</span>
+<span class="vr">NAME</span> = <span class="str">"Imgard"</span>            <span class="cm"># ❌ WRONG — causes error</span>
+
+<span class="cm"># String variables</span>
+<span class="vr">DB_NAME</span>=<span class="str">"PRODDB"</span>
+<span class="vr">LOG_DIR</span>=<span class="str">"/home/oracle/logs"</span>
+
+<span class="cm"># Numeric variables</span>
+<span class="vr">THRESHOLD</span>=85
+<span class="vr">PORT</span>=1521
+
+<span class="cm"># Command output stored in a variable</span>
+<span class="vr">TODAY</span>=$(<span class="kw">date</span> <span class="str">'+%Y-%m-%d'</span>)
+<span class="vr">HOSTNAME</span>=$(<span class="kw">hostname</span>)
+<span class="vr">DISK_USAGE</span>=$(<span class="kw">df</span> -h / | <span class="kw">tail</span> -1 | <span class="kw">awk</span> <span class="str">'{print $5}'</span>)</pre></div>
+<div class="code"><div class="code-label">Accessing variables</div><pre><span class="cm"># Use $ to read a variable's value</span>
+<span class="kw">echo</span> <span class="str">"Database: <span class="vr">$DB_NAME</span>"</span>
+<span class="kw">echo</span> <span class="str">"Threshold: <span class="vr">${THRESHOLD}</span>%"</span>   <span class="cm"># {} for clarity near other text</span>
+
+<span class="cm"># ALWAYS quote your variables</span>
+<span class="kw">echo</span> <span class="str">"<span class="vr">$DB_NAME</span>"</span>             <span class="cm"># ✅ Handles spaces safely</span>
+<span class="kw">echo</span> <span class="vr">$DB_NAME</span>               <span class="cm"># ⚠️ Breaks if value has spaces</span></pre></div>
+<div class="callout coral"><strong>The #1 beginner mistake:</strong> Putting spaces around <code>=</code>. <code>NAME = "value"</code> errors. <code>NAME="value"</code> is correct.</div>
+<div class="nav"><a href="ch05.html">← Chapter 5</a><a href="index.html">📋 Contents</a><a href="ch07.html">Chapter 7 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

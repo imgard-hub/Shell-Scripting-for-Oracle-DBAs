@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Planning Your Scripts — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 15</div>
+<h1>Planning Your Scripts</h1>
+<div class="sub">Chapter 15 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch14.html">← Chapter 14</a><a href="index.html">📋 Contents</a><a href="ch16.html">Chapter 16 →</a></div><h2 class="ch-title">Planning Your Scripts</h2>
+<div class="card"><div class="card-text"><p>Before writing a single line, answer five questions:</p>
+<ol>
+<li><strong>What problem does this solve?</strong> — one sentence</li>
+<li><strong>What inputs does it need?</strong> — database name, paths, thresholds</li>
+<li><strong>What output does it produce?</strong> — log file, email, screen</li>
+<li><strong>What can go wrong?</strong> — database down, file missing, no space</li>
+<li><strong>How will it run?</strong> — manually, via cron, triggered</li>
+</ol>
+<p>Write your answers as comments in the script header. This takes 2 minutes and saves 30 minutes of rewriting.</p></div></div>
+<div class="code"><div class="code-label">Example: planning a backup check script</div><pre><span class="cm"># PLAN:</span>
+<span class="cm"># 1. PURPOSE: Verify RMAN backup completed for all databases</span>
+<span class="cm"># 2. INPUTS:  List of SIDs, ORACLE_HOME path</span>
+<span class="cm"># 3. OUTPUT:  Log file + email if any failed</span>
+<span class="cm"># 4. ERRORS:  Can't connect → log and continue to next DB</span>
+<span class="cm"># 5. SCHEDULE: Daily at 7:00 AM via cron</span>
+<span class="cm">#</span>
+<span class="cm"># PSEUDOCODE:</span>
+<span class="cm"># For each database:</span>
+<span class="cm">#   Connect, check v$rman_backup_job_details</span>
+<span class="cm">#   If status != COMPLETED → add to alert list</span>
+<span class="cm"># If alert list not empty → send email</span>
+<span class="cm"># Write everything to daily log</span></pre></div>
+<div class="callout green"><strong>Write pseudocode first.</strong> Then convert each line into real Bash. This is how professionals build scripts.</div>
+<div class="nav"><a href="ch14.html">← Chapter 14</a><a href="index.html">📋 Contents</a><a href="ch16.html">Chapter 16 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

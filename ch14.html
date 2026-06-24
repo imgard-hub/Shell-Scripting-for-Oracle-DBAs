@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Connecting to Oracle from a Script — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 14</div>
+<h1>Connecting to Oracle from a Script</h1>
+<div class="sub">Chapter 14 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch13.html">← Chapter 13</a><a href="index.html">📋 Contents</a><a href="ch15.html">Chapter 15 →</a></div><h2 class="ch-title">Connecting to Oracle from a Script</h2>
+<div class="card"><div class="card-text"><p>The <strong>here document</strong> (<code>&lt;&lt;EOF</code>) is how you embed SQL directly inside a shell script. This is the bridge between shell scripting and DBA work.</p></div></div>
+<div class="code"><div class="code-label">The pattern — memorize this</div><pre><span class="cm"># Run SQL and display results</span>
+<span class="kw">sqlplus</span> -s / as sysdba &lt;&lt;EOF
+SET LINESIZE 200 PAGESIZE 50
+SELECT instance_name, status FROM v\$instance;
+EXIT;
+EOF</pre></div>
+<div class="callout coral"><strong>Critical:</strong> Inside a here document, escape the $ in Oracle views: <code>v\$instance</code> not <code>v$instance</code>. Without the backslash, Bash treats <code>$instance</code> as a shell variable.</div>
+<div class="code"><div class="code-label">Capture SQL output into a shell variable</div><pre><span class="vr">DB_STATUS</span>=$(<span class="kw">sqlplus</span> -s / as sysdba &lt;&lt;EOF
+SET HEADING OFF FEEDBACK OFF
+SELECT status FROM v\$instance;
+EXIT;
+EOF
+)
+
+<span class="kw">if</span> [ <span class="str">"$(echo <span class="vr">$DB_STATUS</span> | tr -d ' ')"</span> = <span class="str">"OPEN"</span> ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"✅ Database running"</span>
+<span class="kw">fi</span></pre></div>
+<div class="code"><div class="code-label">Run RMAN from a shell script</div><pre><span class="kw">rman</span> target / &lt;&lt;EOF >> <span class="vr">$RMAN_LOG</span>
+BACKUP DATABASE PLUS ARCHIVELOG TAG 'NIGHTLY_FULL';
+EXIT;
+EOF
+
+<span class="kw">if</span> [ <span class="vr">$?</span> -eq 0 ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"✅ Backup completed"</span>
+<span class="kw">else</span>
+    <span class="kw">echo</span> <span class="str">"🚨 Backup FAILED"</span>
+    <span class="kw">mail</span> -s <span class="str">"BACKUP FAILED - <span class="vr">$ORACLE_SID</span>"</span> <span class="vr">$EMAIL</span> &lt; <span class="vr">$RMAN_LOG</span>
+<span class="kw">fi</span></pre></div>
+<div class="nav"><a href="ch13.html">← Chapter 13</a><a href="index.html">📋 Contents</a><a href="ch15.html">Chapter 15 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Working with Files & Output — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 13</div>
+<h1>Working with Files & Output</h1>
+<div class="sub">Chapter 13 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch12.html">← Chapter 12</a><a href="index.html">📋 Contents</a><a href="ch14.html">Chapter 14 →</a></div><h2 class="ch-title">Working with Files & Output</h2>
+<div class="code"><div class="code-label">Redirection — controlling where output goes</div><pre><span class="cm"># >   Write to file (overwrite)</span>
+<span class="kw">echo</span> <span class="str">"Report started"</span> > report.txt
+
+<span class="cm"># >>  Append to file</span>
+<span class="kw">echo</span> <span class="str">"Line 2"</span> >> report.txt
+
+<span class="cm"># 2>  Redirect errors</span>
+<span class="kw">sqlplus</span> / as sysdba @check.sql 2> errors.log
+
+<span class="cm"># &>  Redirect BOTH output and errors</span>
+<span class="kw">sqlplus</span> / as sysdba @check.sql &> full_output.log
+
+<span class="cm"># |   Pipe output into another command</span>
+<span class="kw">cat</span> alert.log | <span class="kw">grep</span> <span class="str">"ORA-"</span> | <span class="kw">tail</span> -20</pre></div>
+<div class="code"><div class="code-label">DBA example: build a daily report file</div><pre><span class="cm">#!/bin/bash</span>
+<span class="vr">REPORT</span>=<span class="str">"/home/oracle/reports/daily_$(date +%Y%m%d).txt"</span>
+
+<span class="kw">echo</span> <span class="str">"=== Daily DBA Report ==="</span>       > <span class="vr">$REPORT</span>
+<span class="kw">echo</span> <span class="str">"Date: $(date)"</span>                 >> <span class="vr">$REPORT</span>
+<span class="kw">echo</span> <span class="str">"Server: $(hostname)"</span>            >> <span class="vr">$REPORT</span>
+<span class="kw">echo</span> <span class="str">""</span>                               >> <span class="vr">$REPORT</span>
+<span class="kw">echo</span> <span class="str">"--- Disk Space ---"</span>             >> <span class="vr">$REPORT</span>
+<span class="kw">df</span> -h                                >> <span class="vr">$REPORT</span>
+<span class="kw">echo</span> <span class="str">""</span>                               >> <span class="vr">$REPORT</span>
+<span class="kw">echo</span> <span class="str">"--- Alert Log Errors ---"</span>       >> <span class="vr">$REPORT</span>
+<span class="kw">grep</span> -i <span class="str">"ORA-"</span> <span class="vr">$ALERT_LOG</span> | <span class="kw">tail</span> -10 >> <span class="vr">$REPORT</span>
+
+<span class="cm"># Email the report</span>
+<span class="kw">mail</span> -s <span class="str">"Daily Report - $(date +%Y-%m-%d)"</span> <span class="vr">$EMAIL</span> &lt; <span class="vr">$REPORT</span></pre></div>
+<div class="nav"><a href="ch12.html">← Chapter 12</a><a href="index.html">📋 Contents</a><a href="ch14.html">Chapter 14 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

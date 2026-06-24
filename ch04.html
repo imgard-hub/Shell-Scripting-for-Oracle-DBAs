@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Your Tools — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 4</div>
+<h1>Your Tools</h1>
+<div class="sub">Chapter 4 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch03.html">← Chapter 3</a><a href="index.html">📋 Contents</a><a href="ch05.html">Chapter 5 →</a></div><h2 class="ch-title">Your Tools</h2>
+<div class="card"><div class="card-text"><p>You don't need anything extra. Everything is already on the server:</p>
+<ul>
+<li><strong>A text editor:</strong> vi/vim, nano (easier for beginners), or VS Code locally</li>
+<li><strong>A terminal:</strong> SSH into your database server</li>
+<li><strong>bash:</strong> already installed on every Linux system</li>
+<li><strong>chmod:</strong> to make scripts executable</li>
+<li><strong>cron:</strong> to schedule scripts (built into Linux)</li>
+</ul></div></div>
+<div class="code"><div class="code-label">Essential commands</div><pre><span class="kw">vi</span> myscript.sh           <span class="cm"># Edit in vi</span>
+<span class="kw">nano</span> myscript.sh         <span class="cm"># Edit in nano (easier)</span>
+<span class="kw">chmod</span> +x myscript.sh     <span class="cm"># Make executable</span>
+./myscript.sh            <span class="cm"># Run it</span>
+<span class="kw">bash</span> -x myscript.sh      <span class="cm"># Debug mode (shows each step)</span></pre></div>
+<div class="code"><div class="code-label">Verify your Oracle environment</div><pre><span class="kw">echo</span> <span class="vr">$ORACLE_HOME</span>     <span class="cm"># Should show Oracle install path</span>
+<span class="kw">echo</span> <span class="vr">$ORACLE_SID</span>      <span class="cm"># Should show database name</span>
+<span class="kw">echo</span> <span class="vr">$PATH</span>            <span class="cm"># Should include $ORACLE_HOME/bin</span>
+
+<span class="cm"># If blank, set them:</span>
+<span class="kw">export</span> <span class="vr">ORACLE_HOME</span>=<span class="str">/u01/app/oracle/product/19c</span>
+<span class="kw">export</span> <span class="vr">ORACLE_SID</span>=<span class="str">ORCL</span>
+<span class="kw">export</span> <span class="vr">PATH</span>=<span class="vr">$ORACLE_HOME</span>/bin:<span class="vr">$PATH</span></pre></div>
+<div class="callout amber"><strong>Editor tip for beginners:</strong> Use <code>nano</code> — it shows shortcuts at the bottom. Type <code>nano myscript.sh</code>. Switch to vi later once comfortable.</div>
+<div class="nav"><a href="ch03.html">← Chapter 3</a><a href="index.html">📋 Contents</a><a href="ch05.html">Chapter 5 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

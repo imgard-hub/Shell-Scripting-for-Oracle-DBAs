@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Anatomy of a Shell Script — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 5</div>
+<h1>Anatomy of a Shell Script</h1>
+<div class="sub">Chapter 5 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch04.html">← Chapter 4</a><a href="index.html">📋 Contents</a><a href="ch06.html">Chapter 6 →</a></div><h2 class="ch-title">Anatomy of a Shell Script</h2>
+<div class="card"><div class="card-text"><p>Every well-written script has 5 parts, in this order:</p>
+<ol>
+<li><strong>The Shebang</strong> — <code>#!/bin/bash</code> — tells the OS which shell to use</li>
+<li><strong>The Header</strong> — comments describing what, who, when, how to run</li>
+<li><strong>Variables</strong> — settings defined at the top (paths, thresholds, emails)</li>
+<li><strong>Functions</strong> — reusable blocks of code</li>
+<li><strong>Main Logic</strong> — the actual work</li>
+</ol></div></div>
+<div class="code"><div class="code-label">A complete, properly structured script</div><pre><span class="cm">#!/bin/bash</span>
+<span class="cm"># ============================================================</span>
+<span class="cm"># Script:  check_tablespace.sh</span>
+<span class="cm"># Purpose: Check tablespace usage and alert if over 85%</span>
+<span class="cm"># Author:  Imgard / Kudrant Academy</span>
+<span class="cm"># Date:    2026-06-22</span>
+<span class="cm"># Usage:   ./check_tablespace.sh</span>
+<span class="cm"># ============================================================</span>
+
+<span class="cm"># ---------- VARIABLES ----------</span>
+<span class="vr">ORACLE_SID</span>=<span class="str">"PRODDB"</span>
+<span class="vr">ORACLE_HOME</span>=<span class="str">"/u01/app/oracle/product/19c"</span>
+<span class="vr">THRESHOLD</span>=85
+<span class="vr">LOG_FILE</span>=<span class="str">"/home/oracle/logs/ts_check.log"</span>
+<span class="vr">EMAIL</span>=<span class="str">"dba@company.com"</span>
+
+<span class="cm"># ---------- FUNCTIONS ----------</span>
+<span class="fn">log_msg</span>() {
+    <span class="kw">echo</span> <span class="str">"$(date '+%Y-%m-%d %H:%M:%S') - $1"</span> >> <span class="vr">$LOG_FILE</span>
+}
+
+<span class="cm"># ---------- MAIN LOGIC ----------</span>
+<span class="fn">log_msg</span> <span class="str">"Starting tablespace check"</span>
+<span class="cm"># (your work goes here)</span>
+<span class="fn">log_msg</span> <span class="str">"Check complete"</span>
+
+<span class="kw">exit</span> 0</pre></div>
+<div class="callout green"><strong>Follow this structure every time.</strong> Six months from now when you modify a script at 2am, you'll thank yourself for the clear header and top-level variables.</div>
+<div class="nav"><a href="ch04.html">← Chapter 4</a><a href="index.html">📋 Contents</a><a href="ch06.html">Chapter 6 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

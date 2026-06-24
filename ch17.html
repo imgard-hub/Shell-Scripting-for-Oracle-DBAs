@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Best Practices & Common Mistakes — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 17</div>
+<h1>Best Practices & Common Mistakes</h1>
+<div class="sub">Chapter 17 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch16.html">← Chapter 16</a><a href="index.html">📋 Contents</a><span class="disabled">End of Course</span></div><h2 class="ch-title">Best Practices & Common Mistakes</h2>
+<div class="card"><div class="card-text"><p><strong>The 10 rules of DBA shell scripting:</strong></p>
+<ol>
+<li><strong>Always start with #!/bin/bash</strong></li>
+<li><strong>Always include a header comment</strong> — name, purpose, author, date</li>
+<li><strong>Define all variables at the top</strong> — never hard-code in the middle</li>
+<li><strong>Set Oracle environment explicitly</strong> — cron doesn't load your profile</li>
+<li><strong>Always quote your variables</strong> — <code>"$VAR"</code> not <code>$VAR</code></li>
+<li><strong>Check $? after critical commands</strong> — don't assume success</li>
+<li><strong>Log everything with timestamps</strong> — future you needs this</li>
+<li><strong>Escape $ in Oracle views</strong> — <code>v\$instance</code> in here documents</li>
+<li><strong>Test on non-production first</strong> — no exceptions</li>
+<li><strong>Redirect cron output to a log</strong></li>
+</ol>
+<p><strong>Common mistakes that break scripts:</strong></p>
+<ul>
+<li>Spaces around <code>=</code>: <code>VAR="value"</code> ✅  <code>VAR = "value"</code> ❌</li>
+<li>Missing spaces in [ ]: <code>[ $A -gt 5 ]</code> ✅  <code>[$A -gt 5]</code> ❌</li>
+<li>Using = for numbers: <code>-eq</code> for numbers, <code>=</code> for strings</li>
+<li>Forgetting <code>v\$</code> in heredocs</li>
+<li>Forgetting <code>chmod +x</code></li>
+<li>Windows line endings — run <code>dos2unix script.sh</code></li>
+</ul></div></div>
+<div class="callout dark"><strong>The automation mindset:</strong> Automate one annoying task this week. Once you feel that time come back, you'll be hooked — and you'll never stop automating.</div>
+<div class="nav"><a href="ch16.html">← Chapter 16</a><a href="index.html">📋 Contents</a><span class="disabled">End of Course</span></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

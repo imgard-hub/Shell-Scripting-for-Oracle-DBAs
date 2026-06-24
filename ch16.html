@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Scheduling with Cron — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 16</div>
+<h1>Scheduling with Cron</h1>
+<div class="sub">Chapter 16 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch15.html">← Chapter 15</a><a href="index.html">📋 Contents</a><a href="ch17.html">Chapter 17 →</a></div><h2 class="ch-title">Scheduling with Cron</h2>
+<div class="card"><div class="card-text"><p>Cron runs your scripts automatically — daily, hourly, every 5 minutes, every Sunday at midnight. This is the final piece that makes automation real.</p></div></div>
+<div class="code"><div class="code-label">Cron syntax — 5 fields</div><pre><span class="cm"># ┌───── minute (0-59)</span>
+<span class="cm"># │ ┌─── hour (0-23)</span>
+<span class="cm"># │ │ ┌─ day of month (1-31)</span>
+<span class="cm"># │ │ │ ┌ month (1-12)</span>
+<span class="cm"># │ │ │ │ ┌ day of week (0-7, 0/7=Sunday)</span>
+<span class="cm"># │ │ │ │ │</span>
+<span class="cm"># * * * * * command</span>
+
+  0  6 * * *   <span class="cm"># Every day at 6:00 AM</span>
+ 30  7 * * 1-5 <span class="cm"># Weekdays at 7:30 AM</span>
+  0  * * * *   <span class="cm"># Every hour</span>
+*/5  * * * *   <span class="cm"># Every 5 minutes</span>
+  0  0 * * 0   <span class="cm"># Every Sunday midnight</span>
+  0 22 * * *   <span class="cm"># Every day 10:00 PM</span></pre></div>
+<div class="code"><div class="code-label">A typical DBA crontab</div><pre><span class="cm"># Edit: crontab -e   |   View: crontab -l</span>
+
+<span class="cm"># Morning health check — 6:00 AM</span>
+0 6 * * * /home/oracle/scripts/daily_check.sh >> /home/oracle/logs/cron.log 2>&1
+
+<span class="cm"># Backup verification — 7:00 AM</span>
+0 7 * * * /home/oracle/scripts/backup_check.sh >> /home/oracle/logs/cron.log 2>&1
+
+<span class="cm"># Tablespace check — every 4 hours</span>
+0 */4 * * * /home/oracle/scripts/ts_check.sh >> /home/oracle/logs/cron.log 2>&1
+
+<span class="cm"># Alert log scan — every hour</span>
+0 * * * * /home/oracle/scripts/alert_scan.sh >> /home/oracle/logs/cron.log 2>&1
+
+<span class="cm"># Cleanup — Sunday at 2:00 AM</span>
+0 2 * * 0 /home/oracle/scripts/cleanup.sh >> /home/oracle/logs/cron.log 2>&1</pre></div>
+<div class="callout coral"><strong>Critical:</strong> Cron does NOT load your .bash_profile. Your script MUST set ORACLE_HOME, ORACLE_SID, and PATH explicitly. This is the #1 reason cron scripts fail.</div>
+<div class="callout cyan"><strong>Always redirect cron output:</strong> Add <code>&gt;&gt; /path/log 2&gt;&amp;1</code> at the end. Without this, cron failures are invisible.</div>
+<div class="nav"><a href="ch15.html">← Chapter 15</a><a href="index.html">📋 Contents</a><a href="ch17.html">Chapter 17 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

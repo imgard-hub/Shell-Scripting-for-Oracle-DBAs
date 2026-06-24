@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Case Statements — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 10</div>
+<h1>Case Statements</h1>
+<div class="sub">Chapter 10 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch09.html">← Chapter 9</a><a href="index.html">📋 Contents</a><a href="ch11.html">Chapter 11 →</a></div><h2 class="ch-title">Case Statements</h2>
+<div class="card"><div class="card-text"><p>When you have many possible values, <strong>case</strong> is cleaner than chaining if-elif-elif. Great for script arguments and menu options.</p></div></div>
+<div class="code"><div class="code-label">DBA example: multi-action admin tool</div><pre><span class="cm">#!/bin/bash</span>
+<span class="cm"># Usage: ./db_admin.sh start|stop|status|backup</span>
+
+<span class="kw">case</span> <span class="str">"<span class="vr">$1</span>"</span> <span class="kw">in</span>
+    start)
+        <span class="kw">echo</span> <span class="str">"Starting database..."</span>
+        <span class="kw">sqlplus</span> / as sysdba &lt;&lt;EOF
+        STARTUP;
+        EXIT;
+EOF
+        ;;
+    stop)
+        <span class="kw">echo</span> <span class="str">"Stopping database..."</span>
+        <span class="kw">sqlplus</span> / as sysdba &lt;&lt;EOF
+        SHUTDOWN IMMEDIATE;
+        EXIT;
+EOF
+        ;;
+    status)
+        <span class="kw">sqlplus</span> -s / as sysdba &lt;&lt;EOF
+        SELECT instance_name, status FROM v\$instance;
+        EXIT;
+EOF
+        ;;
+    backup)
+        <span class="kw">rman</span> target / &lt;&lt;EOF
+        BACKUP DATABASE PLUS ARCHIVELOG;
+        EXIT;
+EOF
+        ;;
+    *)
+        <span class="kw">echo</span> <span class="str">"Usage: $0 {start|stop|status|backup}"</span>
+        <span class="kw">exit</span> 1
+        ;;
+<span class="kw">esac</span></pre></div>
+<div class="nav"><a href="ch09.html">← Chapter 9</a><a href="index.html">📋 Contents</a><a href="ch11.html">Chapter 11 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

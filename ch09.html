@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>If-Else Statements — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 9</div>
+<h1>If-Else Statements</h1>
+<div class="sub">Chapter 9 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch08.html">← Chapter 8</a><a href="index.html">📋 Contents</a><a href="ch10.html">Chapter 10 →</a></div><h2 class="ch-title">If-Else Statements</h2>
+<div class="code"><div class="code-label">Basic if / elif / else</div><pre><span class="cm"># Simple if</span>
+<span class="kw">if</span> [ <span class="vr">$PCT</span> -gt 85 ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"WARNING"</span>
+<span class="kw">fi</span>
+
+<span class="cm"># If-else</span>
+<span class="kw">if</span> [ <span class="vr">$PCT</span> -gt 85 ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"WARNING"</span>
+<span class="kw">else</span>
+    <span class="kw">echo</span> <span class="str">"OK"</span>
+<span class="kw">fi</span>
+
+<span class="cm"># Multiple conditions with elif</span>
+<span class="kw">if</span> [ <span class="vr">$PCT</span> -ge 95 ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"🔴 CRITICAL: <span class="vr">${PCT}</span>% — act NOW"</span>
+<span class="kw">elif</span> [ <span class="vr">$PCT</span> -ge 85 ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"🟡 WARNING: <span class="vr">${PCT}</span>% — plan to add space"</span>
+<span class="kw">elif</span> [ <span class="vr">$PCT</span> -ge 70 ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"🟢 MONITOR: <span class="vr">${PCT}</span>% — watch growth"</span>
+<span class="kw">else</span>
+    <span class="kw">echo</span> <span class="str">"✅ OK: <span class="vr">${PCT}</span>%"</span>
+<span class="kw">fi</span></pre></div>
+<div class="code"><div class="code-label">DBA example: check database status</div><pre><span class="cm">#!/bin/bash</span>
+<span class="vr">STATUS</span>=$(<span class="kw">sqlplus</span> -s / as sysdba &lt;&lt;EOF
+SET HEADING OFF FEEDBACK OFF
+SELECT status FROM v\$instance;
+EXIT;
+EOF
+)
+
+<span class="kw">if</span> [ <span class="str">"<span class="vr">$STATUS</span>"</span> = <span class="str">"OPEN"</span> ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"✅ Database is UP"</span>
+<span class="kw">else</span>
+    <span class="kw">echo</span> <span class="str">"🚨 Database is DOWN: <span class="vr">$STATUS</span>"</span>
+    <span class="cm"># send alert email here</span>
+<span class="kw">fi</span></pre></div>
+<div class="nav"><a href="ch08.html">← Chapter 8</a><a href="index.html">📋 Contents</a><a href="ch10.html">Chapter 10 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

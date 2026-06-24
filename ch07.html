@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Types of Variables — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 7</div>
+<h1>Types of Variables</h1>
+<div class="sub">Chapter 7 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch06.html">← Chapter 6</a><a href="index.html">📋 Contents</a><a href="ch08.html">Chapter 8 →</a></div><h2 class="ch-title">Types of Variables</h2>
+<div class="code"><div class="code-label">1. User-defined — you create these</div><pre><span class="vr">BACKUP_DIR</span>=<span class="str">"/u01/backups"</span>
+<span class="vr">ALERT_EMAIL</span>=<span class="str">"dba@company.com"</span>
+<span class="vr">MAX_RETRIES</span>=3</pre></div>
+<div class="code"><div class="code-label">2. Environment — set by the system/Oracle</div><pre><span class="kw">echo</span> <span class="vr">$ORACLE_HOME</span>    <span class="cm"># Oracle install path</span>
+<span class="kw">echo</span> <span class="vr">$ORACLE_SID</span>     <span class="cm"># Database name</span>
+<span class="kw">echo</span> <span class="vr">$HOME</span>           <span class="cm"># Home directory</span>
+<span class="kw">echo</span> <span class="vr">$USER</span>           <span class="cm"># Current username</span>
+<span class="kw">echo</span> <span class="vr">$PATH</span>           <span class="cm"># Command search path</span>
+
+<span class="cm"># Export makes a variable available to child processes</span>
+<span class="kw">export</span> <span class="vr">ORACLE_SID</span>=<span class="str">"PRODDB"</span></pre></div>
+<div class="code"><div class="code-label">3. Special — built into Bash</div><pre><span class="vr">$?</span>    <span class="cm"># Exit code of last command (0=success)</span>
+<span class="vr">$0</span>    <span class="cm"># Name of the current script</span>
+<span class="vr">$#</span>    <span class="cm"># Number of arguments passed</span>
+<span class="vr">$1</span>    <span class="cm"># First argument</span>
+<span class="vr">$2</span>    <span class="cm"># Second argument</span>
+<span class="vr">$$</span>    <span class="cm"># Process ID of current script</span>
+
+<span class="cm"># Example: check if sqlplus succeeded</span>
+<span class="kw">sqlplus</span> -s / as sysdba @check.sql
+<span class="kw">if</span> [ <span class="vr">$?</span> -ne 0 ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"SQL*Plus failed!"</span>
+<span class="kw">fi</span></pre></div>
+<div class="code"><div class="code-label">4. Positional — arguments from the command line</div><pre><span class="cm"># When you run: ./myscript.sh PRODDB 85</span>
+<span class="vr">$0</span>  <span class="cm"># → ./myscript.sh</span>
+<span class="vr">$1</span>  <span class="cm"># → PRODDB</span>
+<span class="vr">$2</span>  <span class="cm"># → 85</span>
+
+<span class="cm">#!/bin/bash</span>
+<span class="vr">DB_NAME</span>=<span class="vr">$1</span>
+<span class="kw">if</span> [ -z <span class="str">"<span class="vr">$DB_NAME</span>"</span> ]; <span class="kw">then</span>
+    <span class="kw">echo</span> <span class="str">"Usage: $0 &lt;database_name&gt;"</span>
+    <span class="kw">exit</span> 1
+<span class="kw">fi</span></pre></div>
+<div class="callout cyan"><strong>Best practice:</strong> Define ALL variables at the top of your script. Never hard-code paths or values in the middle of the logic.</div>
+<div class="nav"><a href="ch06.html">← Chapter 6</a><a href="index.html">📋 Contents</a><a href="ch08.html">Chapter 8 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Loops — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 11</div>
+<h1>Loops</h1>
+<div class="sub">Chapter 11 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch10.html">← Chapter 10</a><a href="index.html">📋 Contents</a><a href="ch12.html">Chapter 12 →</a></div><h2 class="ch-title">Loops</h2>
+<div class="code"><div class="code-label">For loop — iterate a list</div><pre><span class="cm"># Check all databases</span>
+<span class="kw">for</span> <span class="vr">DB</span> <span class="kw">in</span> PRODDB TESTDB DEVDB; <span class="kw">do</span>
+    <span class="kw">echo</span> <span class="str">"Checking: <span class="vr">$DB</span>"</span>
+    <span class="kw">export</span> <span class="vr">ORACLE_SID</span>=<span class="vr">$DB</span>
+    <span class="kw">sqlplus</span> -s / as sysdba &lt;&lt;EOF
+    SELECT status FROM v\$instance;
+    EXIT;
+EOF
+<span class="kw">done</span>
+
+<span class="cm"># Loop through files (cleanup old logs)</span>
+<span class="kw">for</span> <span class="vr">FILE</span> <span class="kw">in</span> $(<span class="kw">find</span> /home/oracle/logs -name "*.log" -mtime +30); <span class="kw">do</span>
+    <span class="kw">echo</span> <span class="str">"Removing: <span class="vr">$FILE</span>"</span>
+    <span class="kw">rm</span> <span class="str">"<span class="vr">$FILE</span>"</span>
+<span class="kw">done</span></pre></div>
+<div class="code"><div class="code-label">While loop — repeat until condition changes</div><pre><span class="cm"># Wait for database to come up (with timeout)</span>
+<span class="vr">COUNTER</span>=0
+<span class="vr">MAX_WAIT</span>=10
+
+<span class="kw">while</span> [ <span class="vr">$COUNTER</span> -lt <span class="vr">$MAX_WAIT</span> ]; <span class="kw">do</span>
+    <span class="vr">STATUS</span>=$(<span class="kw">sqlplus</span> -s / as sysdba &lt;&lt;EOF
+SET HEADING OFF FEEDBACK OFF
+SELECT status FROM v\$instance;
+EXIT;
+EOF
+)
+    <span class="kw">if</span> [ <span class="str">"<span class="vr">$STATUS</span>"</span> = <span class="str">"OPEN"</span> ]; <span class="kw">then</span>
+        <span class="kw">echo</span> <span class="str">"Database is OPEN!"</span>
+        <span class="kw">break</span>
+    <span class="kw">fi</span>
+    <span class="kw">echo</span> <span class="str">"Waiting... <span class="vr">$COUNTER</span>/<span class="vr">$MAX_WAIT</span>"</span>
+    <span class="kw">sleep</span> 30
+    <span class="vr">COUNTER</span>=$((<span class="vr">COUNTER</span> + 1))
+<span class="kw">done</span></pre></div>
+<div class="code"><div class="code-label">Nested loops — check multiple things across databases</div><pre><span class="kw">for</span> <span class="vr">DB</span> <span class="kw">in</span> PRODDB TESTDB DEVDB; <span class="kw">do</span>
+    <span class="kw">echo</span> <span class="str">"=== <span class="vr">$DB</span> ==="</span>
+    <span class="kw">export</span> <span class="vr">ORACLE_SID</span>=<span class="vr">$DB</span>
+    <span class="kw">for</span> <span class="vr">CHECK</span> <span class="kw">in</span> status space backup; <span class="kw">do</span>
+        <span class="kw">echo</span> <span class="str">"  Running: <span class="vr">$CHECK</span>"</span>
+    <span class="kw">done</span>
+<span class="kw">done</span></pre></div>
+<div class="callout green"><strong>Real-world use:</strong> Nested loops let you build one health-check script that monitors ALL databases across ALL checks — one script, one cron job, complete coverage.</div>
+<div class="nav"><a href="ch10.html">← Chapter 10</a><a href="index.html">📋 Contents</a><a href="ch12.html">Chapter 12 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

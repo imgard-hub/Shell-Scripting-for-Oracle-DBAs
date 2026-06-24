@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Functions — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 12</div>
+<h1>Functions</h1>
+<div class="sub">Chapter 12 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch11.html">← Chapter 11</a><a href="index.html">📋 Contents</a><a href="ch13.html">Chapter 13 →</a></div><h2 class="ch-title">Functions</h2>
+<div class="card"><div class="card-text"><p>Functions let you write code once and call it anywhere. They keep scripts clean, short, and maintainable.</p></div></div>
+<div class="code"><div class="code-label">Defining and using functions</div><pre><span class="cm">#!/bin/bash</span>
+
+<span class="cm"># Logging function</span>
+<span class="fn">log</span>() {
+    <span class="kw">echo</span> <span class="str">"[$(date '+%H:%M:%S')] $1"</span> | <span class="kw">tee</span> -a <span class="vr">$LOG_FILE</span>
+}
+
+<span class="cm"># Database check function</span>
+<span class="fn">check_db</span>() {
+    <span class="kw">local</span> <span class="vr">SID</span>=<span class="vr">$1</span>           <span class="cm"># local keeps var inside function</span>
+    <span class="kw">export</span> <span class="vr">ORACLE_SID</span>=<span class="vr">$SID</span>
+    <span class="vr">STATUS</span>=$(<span class="kw">sqlplus</span> -s / as sysdba &lt;&lt;EOF
+SET HEADING OFF FEEDBACK OFF
+SELECT status FROM v\$instance;
+EXIT;
+EOF
+)
+    <span class="kw">if</span> [ <span class="str">"<span class="vr">$STATUS</span>"</span> = <span class="str">"OPEN"</span> ]; <span class="kw">then</span>
+        <span class="fn">log</span> <span class="str">"<span class="vr">$SID</span>: UP"</span>
+    <span class="kw">else</span>
+        <span class="fn">log</span> <span class="str">"<span class="vr">$SID</span>: DOWN — <span class="vr">$STATUS</span>"</span>
+    <span class="kw">fi</span>
+}
+
+<span class="cm"># Call the function for each database</span>
+<span class="vr">LOG_FILE</span>=<span class="str">"/home/oracle/logs/check.log"</span>
+<span class="fn">log</span> <span class="str">"Starting health check"</span>
+<span class="fn">check_db</span> PRODDB
+<span class="fn">check_db</span> TESTDB
+<span class="fn">check_db</span> DEVDB
+<span class="fn">log</span> <span class="str">"Complete"</span></pre></div>
+<div class="nav"><a href="ch11.html">← Chapter 11</a><a href="index.html">📋 Contents</a><a href="ch13.html">Chapter 13 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>

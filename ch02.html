@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Types of Shells — Shell Scripting for Oracle DBAs</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="hero">
+<div class="badge">CHAPTER 2</div>
+<h1>Types of Shells</h1>
+<div class="sub">Chapter 2 of 17</div>
+<div class="meta">Phase 5 — Work Like a Pro · Kudrant Lab</div>
+</div><div class="container"><div class="nav"><a href="ch01.html">← Chapter 1</a><a href="index.html">📋 Contents</a><a href="ch03.html">Chapter 3 →</a></div><h2 class="ch-title">Types of Shells</h2>
+<div class="card"><div class="card-text"><p>There are several shell programs available on Linux/Unix. Each interprets commands slightly differently:</p>
+<table class="tbl">
+<tr><th>Shell</th><th>Name</th><th>Path</th><th>Notes</th></tr>
+<tr><td><strong>bash</strong></td><td>Bourne Again Shell</td><td>/bin/bash</td><td>Most common. Default on most Linux. <strong>This course uses bash.</strong></td></tr>
+<tr><td><strong>sh</strong></td><td>Bourne Shell</td><td>/bin/sh</td><td>The original. More limited. Often symlinked to bash.</td></tr>
+<tr><td><strong>ksh</strong></td><td>Korn Shell</td><td>/bin/ksh</td><td>Common on older Solaris/AIX. Very similar to bash.</td></tr>
+<tr><td><strong>csh/tcsh</strong></td><td>C Shell</td><td>/bin/csh</td><td>C-like syntax. Rarely used for DBA scripts.</td></tr>
+<tr><td><strong>zsh</strong></td><td>Z Shell</td><td>/bin/zsh</td><td>Modern, powerful. Default on macOS. Compatible with most bash.</td></tr>
+</table></div></div>
+<div class="code"><div class="code-label">How to check your shell</div><pre><span class="cm"># What shell are you using right now?</span>
+<span class="kw">echo</span> <span class="vr">$SHELL</span>
+<span class="cm"># Output: /bin/bash  (this is what you want)</span>
+
+<span class="cm"># What shells are available?</span>
+<span class="kw">cat</span> /etc/shells
+
+<span class="cm"># Check the oracle user's shell</span>
+<span class="kw">grep</span> oracle /etc/passwd</pre></div>
+<div class="callout cyan"><strong>Bottom line:</strong> Use <strong>bash</strong>. It's the standard, it's everywhere, and every example in this course uses bash.</div>
+<div class="nav"><a href="ch01.html">← Chapter 1</a><a href="index.html">📋 Contents</a><a href="ch03.html">Chapter 3 →</a></div></div><div class="footer"><span class="brand">KUDRANT LAB</span> · Shell Scripting for Oracle DBAs · Phase 5</div></body></html>
